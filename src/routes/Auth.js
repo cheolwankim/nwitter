@@ -1,13 +1,15 @@
+import { authService } from "fbase";
 import { useState } from "react";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  
-  const onChange = (event) => { //onchange 2개 동시에받기
+  const [newAccount, setNewAccount] = useState(true);
+
+  const onChange = (event) => {
+    //onchange 2개 동시에받기
     const {
-      target: { name, value },
+      target: { name, value }, //event.target에서 key가 name, value 인것 추출
     } = event;
     if (name === "email") {
       setEmail(value);
@@ -15,8 +17,24 @@ const Auth = () => {
       setPassword(value);
     }
   };
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
+    let data;
+    try {
+      if (newAccount) {
+        //newAccount이 true면 creat account
+        data = await authService.createUserWithEmailAndPassword(
+          email,
+          password
+        );
+      } else {
+        //log in
+        data = await authService.signInWithEmailAndPassword(email, password);
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
@@ -37,7 +55,7 @@ const Auth = () => {
           onChange={onChange}
           required
         />
-        <input type="submit" value="Log In" />
+        <input type="submit" value={newAccount ? "Create Acount" : "Log In"} />
       </form>
       <div>
         <button>Continue with Google</button>

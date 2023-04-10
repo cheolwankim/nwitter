@@ -5,7 +5,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newAccount, setNewAccount] = useState(true);
-
+  const [error, setError] = useState("");
   const onChange = (event) => {
     //onchange 2개 동시에받기
     const {
@@ -33,9 +33,15 @@ const Auth = () => {
       }
       console.log(data);
     } catch (error) {
-      console.log(error);
+      setError(error.message);
     }
+    const toggleAccount = () => {
+      //newAcount의 반대되는것 리턴
+      setNewAccount((prev) => !prev);
+    };
   };
+  const toggleAccount = () => setNewAccount((prev) => !prev);
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -56,7 +62,11 @@ const Auth = () => {
           required
         />
         <input type="submit" value={newAccount ? "Create Acount" : "Log In"} />
+        {error}
       </form>
+      <span onClick={toggleAccount}>
+        {newAccount ? "Sign In" : "Create Account"}
+      </span>
       <div>
         <button>Continue with Google</button>
         <button>Continue with Github</button>

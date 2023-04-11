@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
+  const [attachment, setAttachment] = useState();
 
   useEffect(() => {
     dbService.collection("nweets").onSnapshot((snapshot) => {
@@ -33,6 +34,27 @@ const Home = ({ userObj }) => {
     } = event;
     setNweet(value);
   };
+  const onFileChange = (event) => {
+    // console.log(event.target.files); // FileList
+    const {
+      //event.target에서 files 추출
+      target: { files },
+    } = event;
+
+    const theFile = files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = (finishedEvent) => {
+      //load end시 실행
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setAttachment(result);
+    };
+    reader.readAsDataURL(theFile);
+  };
+
+  const onClearAttachment = () => setAttachment(null);
 
   return (
     <div>
@@ -44,14 +66,21 @@ const Home = ({ userObj }) => {
           placeholder="What's on Your Mind?"
           maxLength={120}
         />
+        <input type="file" accept="image/*" onChange={onFileChange} />
         <input type="submit" value="Nweet" />
+        {attachment && (
+          <div>
+            <img src={attachment} width="100px" height="100px" />
+            <button onClick={onClearAttachment}>Clear Image</button>
+          </div>
+        )}
       </form>
       <div>
         {nweets.map((nweet) => (
-            <Nweet
+          <Nweet
             key={nweet.id}
             nweetObj={nweet}
-            isOwner={nweet.creatorId ===userObj.uid}
+            isOwner={nweet.creatorId === userObj.uid}
           />
         ))}
       </div>

@@ -1,5 +1,10 @@
 My Twitter with REACT & FIREBASE
 
+
+![image](https://user-images.githubusercontent.com/105213482/231605305-f869865b-193a-4056-b3ac-ca8202739eb1.png)
+
+<br>
+
 ![image](https://user-images.githubusercontent.com/105213482/231604780-abeff88b-eb5d-4bd2-9366-6553ec891fee.png)
 
 

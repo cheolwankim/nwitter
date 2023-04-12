@@ -1,11 +1,12 @@
 {
   "files": {
-    "main.css": "/nwitter/static/css/main.f108193e.css",
+    "main.css": "/nwitter/static/css/main.6f20ab2c.css",
     "main.js": "/nwitter/static/js/main.aa0f84b8.js",
+    "static/media/backimage.jpg": "/nwitter/static/media/backimage.b4d1895526bb0156fbdb.jpg",
     "index.html": "/nwitter/index.html"
   },
   "entrypoints": [
-    "static/css/main.f108193e.css",
+    "static/css/main.6f20ab2c.css",
     "static/js/main.aa0f84b8.js"
   ]
 }

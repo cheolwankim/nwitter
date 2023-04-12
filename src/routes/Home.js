@@ -1,6 +1,7 @@
 import Nweet from "components/Nweet";
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
@@ -18,15 +19,20 @@ const Home = ({ userObj }) => {
   }, []);
 
   const onSubmit = async (event) => {
-    //submit할때마다 doc 생성하기
     event.preventDefault();
-    await dbService.collection("nweets").add({
-      //add data
-      text: nweet,
-      createdAt: Date.now(),
-      creatorId: userObj.uid,
-    });
-    setNweet("");
+    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+    //이미지의 path를 child에
+    //파일에대한 ref 가짐
+
+    const response = await fileRef.putString(attachment, "data_url");
+    console.log(response);
+    // await dbService.collection("nweets").add({ //submit할때마다 doc 생성하기
+    //   //add data
+    //   text: nweet,
+    //   createdAt: Date.now(),
+    //   creatorId: userObj.uid,
+    // });
+    // setNweet("");
   };
   const onChange = (event) => {
     const {
@@ -70,7 +76,7 @@ const Home = ({ userObj }) => {
         <input type="submit" value="Nweet" />
         {attachment && (
           <div>
-            <img src={attachment} width="100px" height="100px" />
+            <img src={attachment} width="100px" height="100px" alt="" />
             <button onClick={onClearAttachment}>Clear Image</button>
           </div>
         )}
